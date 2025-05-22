@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: Ecourt-Json-analyzer # You can change this name
+    env: python
+    pythonVersion: "3.10" # Or "3.9", "3.11" - choose a version compatible with your code
+    plan: free # Or your desired Render plan (e.g., "starter")
+    region: oregon # Or your preferred region (e.g., frankfurt, singapore)
+    buildCommand: "pip install -r requirements.txt,python-dotenv"
+    # IMPORTANT: Ensure the filename matches your Python script.
+    # If you rename "json_analyzer (1).py" to "app.py", change it here too.
+    startCommand: "streamlit run app.py --server.port $PORT --server.headless true --server.enableCORS false --server.enableXsrfProtection false"
+    healthCheckPath: "/_stcore/health"
+    envVars:
+      - key: PYTHON_VERSION 
+        value: "3.10" 
+      - key: GROQ_API_KEY
+        value: "flp_wi27kyKbSh5GHeDky8ctwjf4qA6aikHtBdjCiUcYQCUdc"
+        sync: false
+     

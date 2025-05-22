@@ -1,0 +1,3 @@
+# .gitignore (MUST include)
+.env
+*.secret
