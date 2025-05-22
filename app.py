@@ -1,24 +1,38 @@
+
+
+
 import streamlit as st
 import json
 import requests
 import re
 import os # Import the os module
-from dotenv import load_dotenv # Import load_dotenv
 
-load_dotenv() # Load environment variables from .env file (if it exists)
+from dotenv import load_dotenv
+from pathlib import Path # For easier path handling
 
-# # --- Groq API Configuration ---
-# GROQ_API_URL = "https://api.friendli.ai/dedicated/v1/chat/completions"
-# GROQ_DEFAULT_MODEL = "c6xp7t1pxbvl"
+print(f"Current Working Directory: {os.getcwd()}")
+print(f"Files in CWD: {os.listdir('.')}")
 
+# Explicitly specify path if needed (though default should work if in same dir)
+# dotenv_path = Path('.') / '.env' # Path to .env in current directory
+# print(f"Expected .env path: {dotenv_path.resolve()}")
+# print(f"Does .env exist at expected path? {dotenv_path.exists()}")
 
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+# Try loading and check return value
+loaded_successfully = load_dotenv()
+print(f"load_dotenv() successful: {loaded_successfully}")
+
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+print(f"GROQ_API_KEY after load_dotenv and os.environ.get: '{GROQ_API_KEY}'")
+
 GROQ_DEFAULT_MODEL = "llama3-8b-8192"
  
 
 
 # --- Get API Key from Environment Variable ---
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+# GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+ 
 
 # --- !!! DO NOT HARDCODE API KEY HERE ANYMORE !!! ---
 
@@ -449,7 +463,7 @@ Explanation for Case {index + 1} (Strictly use bullet points for each section be
                 # --- MODIFICATION: AUTOMATICALLY FETCH LLM EXPLANATION FOR RELEVANT CASES ---
         llm_explanation_content_auto_fetched = None # Initialize
         if potential_relevance_status_for_case == "Potentially Relevant":
-            if GROQ_API_KEY and GROQ_API_KEY != "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": # Check against placeholder
+            if GROQ_API_KEY and GROQ_API_KEY != "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": # Check against placeholder
                 # This call happens during the main analysis phase for relevant cases
                 explanation = query_groq_chat(
                     messages=[{"role": "user", "content": prompt_for_case_explanation}]
@@ -625,7 +639,7 @@ if st.session_state.fir_analysis_results is not None:
 
                     explain_button_key = f"explain_btn_{sanitized_record_key}" # Key must be unique
                     if st.button(manual_fetch_button_text, key=explain_button_key, help=f"LLM explanation for {record_source_text}", type="secondary"):
-                        if not GROQ_API_KEY or GROQ_API_KEY == "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": # Check placeholder
+                        if not GROQ_API_KEY or GROQ_API_KEY == "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":    # Check placeholder
                             st.error("Groq API Key is missing or is placeholder.")
                         else:
                             with st.spinner(f"Asking Groq ({GROQ_DEFAULT_MODEL})..."):
